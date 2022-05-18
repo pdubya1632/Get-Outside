@@ -1,223 +1,128 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
-    />
-    <link rel="stylesheet" href="./Assets/css/style.css" />
-    <title>Document</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Best Hikes!</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./Assets/css/style.css">
   </head>
   <body>
-    <header>
-      <div class="container">
-        <figure class="image">
-          <img src="./Assets/header.webp" style="max-height: 150px" />
-        </figure>
-      </div>
-    </header>
-    <nav class="navbar-brand has-background-primary">
-      <div class="navbar-brand">
-        <a class="navbar-item"> Home </a>
+    <section class="section">
+        <div class="container">
+            <section class="hero is-info">
+                <div class="hero-body">
+                  <p class="title is-1">
+                    Best Hikes
+                  </p>
+                  <p class="subtitle">
+                    Primary subtitle
+                  </p>
+                </div>
+              </section>
+            <p class="subtitle"></p>
+            <nav class="navbar" role="navigation" aria-label="main navigation">
+                <div id="navbarBasicExample" class="navbar-menu">
+                  <div class="navbar-start">
+                    <div class="navbar-item">
+                        <p class="control is-expanded has-icons-right">
+                            <input class="input" type="search" placeholder="Search..."/>
+                            <span class="icon is-small is-right"><i class="fas fa-chack"></i></span>
+                        </p>
+                    </div>
+    
+                  </div>
+              
+                  <div class="navbar-end">
+                    <div class="navbar-item">
+                      <div class="buttons">
+                        <a class="button is-light"> 
+                            ... 
+                        </a>
+                        <a class="button is-light"> 
+                          ... 
+                        </a>
+                        <a class="button is-light">
+                          ...
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </nav>
 
-        <a class="navbar-item"> Gallery </a>
-        <a class="navbar-item"> About </a>
-      </div>
-    </nav>
-    <div class="columns has-background-info is-mobile">
-      <div class="column is-one-third">
-        <input
-          class="input is-size-6 is-small is-rounded is-primary"
-          type="text"
-          placeholder="Avengers"
-        />
-        <div class="button is-small center is-rounded has-background-warning">
-          Search
+            <div class="tile is-ancestor">
+                <div class="tile is-vertical is-4">
+                  <div class="tile">
+                    <div class="tile is-parent is-vertical">
+                        <div class="card block">
+                            <header class="card-header">
+                              <p class="card-header-title">
+                                Result1
+                              </p>
+                              <button class="card-header-icon" aria-label="more options">
+                                <span class="icon">
+                                  <i class="fas fa-angle-down" aria-hidden="true"></i>
+                                </span>
+                              </button>
+                            </header>
+                        </div>
+                        <div class="card block">
+                            <header class="card-header">
+                            <p class="card-header-title">
+                                Result2
+                            </p>
+                            <button class="card-header-icon" aria-label="more options">
+                                <span class="icon">
+                                <i class="fas fa-angle-down" aria-hidden="true"></i>
+                                </span>
+                            </button>
+                            </header>
+                        </div>
+                    </div>
+                    
+                </div>               
+            </div>
+            <div class="tile is-8 is-vertical">
+                <div class="tile">
+                  <div class="tile is-parent">
+                    <article class="tile is-child box">
+                      <p class="title has-background-primary-light">Weather</p>
+                      <p class="subtitle">Subtitle</p>
+                    </article>
+                  </div>
+                  <div class="tile is-parent">
+                    <article class="tile is-child box">
+                      <p class="title has-background-primary-light">Detail</p>
+                      <p class="subtitle">Subtitle</p>
+                    </article>
+                  </div>
+                </div>
+                <div class="tile">
+                    <div class="tile is-parent">
+                      <article class="tile is-child box">
+                        <p class="title has-background-primary-light">Recommended</p>
+                        <p class="subtitle">Subtitle</p>
+                      </article>
+                    </div>
+                    <div class="tile is-parent">
+                      <article class="tile is-child box">
+                        <p class="title has-background-primary-light">Recommended</p>
+                        <p class="subtitle">Subtitle</p>
+                      </article>
+                    </div>
+                </div> 
+                <div class="tile is-parent">
+                    <article class="tile is-child box">
+                      <p class="title has-background-primary-light">Map</p>
+                      <p class="subtitle">Location, Direction, Distance...etc</p>
+                    </article>
+                  </div>           
+            </div>
         </div>
-        <div class="content">
-          <h4 class="title is-size-4">Hello World</h4>
-          <p>
-            Lorem ipsum<sup><a>[1]</a></sup> dolor sit amet, consectetur Sub<sub
-              >script</sub
-            >
-            works as well!
-          </p>
-          <h4 class="title is-size-4">Second level</h4>
-          <p>
-            Curabitur accumsan turpis pharetra
-            <strong>augue tincidunt</strong> blandit.
-          </p>
-          <ul>
-            <li>In fermentum leo eu lectus</li>
-            <li>Morbi eu nulla lobortis,</li>
-          </ul>
-        </div>
-      </div>
-      <div class="column">
-        <div class="columns is-multiline">
-          <div class="column has-background-warning is-6">
-            <div class="container">
-              <figure class="image">
-                <img
-                  src="./Assets/first.jpeg"
-                  style="max-width: fit-content; max-height: 200px"
-                />
-              </figure>
-            </div>
-            <br />
-            <div class="content">
-              <h4 class="title is-size-5">and discription</h4>
-              <p>
-                Curabitur accumsan turpis pharetra
-                <strong>augue tincidunt</strong> blandit.
-              </p>
-            </div>
-          </div>
-          <div class="column has-background-light is-6">
-            <div class="container">
-              <figure class="image">
-                <img
-                  src="./Assets/second.jpeg"
-                  style="max-width: fit-content; max-height: 200px"
-                />
-              </figure>
-            </div>
-            <br />
-            <div class="content">
-              <h4 class="title is-size-5">and discription</h4>
-              <p>
-                Curabitur accumsan turpis pharetra
-                <strong>augue tincidunt</strong> blandit.
-              </p>
-            </div>
-          </div>
-          <div class="column has-background-warning is-6">
-            <div class="container">
-              <figure class="image">
-                <img
-                  src="./Assets/third.jpeg"
-                  style="max-width: fit-content; max-height: 200px"
-                />
-              </figure>
-            </div>
-            <br />
-            <div class="content">
-              <h4 class="title is-size-5">and discription</h4>
-              <p>
-                Curabitur accumsan turpis pharetra
-                <strong>augue tincidunt</strong> blandit.
-              </p>
-            </div>
-          </div>
-          <div class="column has-background-light is-6">
-            <div class="container">
-              <figure class="image">
-                <img
-                  src="./Assets/fourth.jpeg"
-                  style="max-width: fit-content; max-height: 200px"
-                />
-              </figure>
-            </div>
-            <br />
-            <div class="content">
-              <h4 class="title is-size-5">and discription</h4>
-              <p>
-                Curabitur accumsan turpis pharetra
-                <strong>augue tincidunt</strong> blandit.
-              </p>
-            </div>
-          </div>
-          <div class="column has-background-warning is-6">
-            <div class="container">
-              <figure class="image">
-                <img
-                  src="./Assets/first.jpeg"
-                  style="max-width: fit-content; max-height: 200px"
-                />
-              </figure>
-            </div>
-            <br />
-            <div class="content">
-              <h4 class="title is-size-5">and discription</h4>
-              <p>
-                Curabitur accumsan turpis pharetra
-                <strong>augue tincidunt</strong> blandit.
-              </p>
-            </div>
-          </div>
-          <div class="column has-background-light is-6">
-            <div class="container">
-              <figure class="image">
-                <img
-                  src="./Assets/second.jpeg"
-                  style="max-width: fit-content; max-height: 200px"
-                />
-              </figure>
-            </div>
-            <br />
-            <div class="content">
-              <h4 class="title is-size-5">and discription</h4>
-              <p>
-                Curabitur accumsan turpis pharetra
-                <strong>augue tincidunt</strong> blandit.
-              </p>
-            </div>
-          </div>
-          <div class="column has-background-warning is-6">
-            <div class="container">
-              <figure class="image">
-                <img
-                  src="./Assets/third.jpeg"
-                  style="max-width: fit-content; max-height: 200px"
-                />
-              </figure>
-            </div>
-            <br />
-            <div class="content">
-              <h4 class="title is-size-5">and discription</h4>
-              <p>
-                Curabitur accumsan turpis pharetra
-                <strong>augue tincidunt</strong> blandit.
-              </p>
-            </div>
-          </div>
-          <div class="column has-background-light is-6">
-            <div class="container">
-              <figure class="image">
-                <img
-                  src="./Assets/fourth.jpeg"
-                  style="max-width: fit-content; max-height: 200px"
-                />
-              </figure>
-            </div>
-            <br />
-            <div class="content">
-              <h4 class="title is-size-5">and discription</h4>
-              <p>
-                Curabitur accumsan turpis pharetra
-                <strong>augue tincidunt</strong> blandit.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="footer">
-      <div class="content has-text-centered">
-        <p>
-          <strong>Bulma</strong> by
-          <a href="https://jgthms.com">Jeremy Thomas</a>. The source code is
-          licensed
-          <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The
-          website content is licensed
-          <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/"
-            >CC BY NC SA 4.0</a
-          >.
-        </p>
-      </div>
-    </footer>
+
+        
+    </section>
+
   </body>
 </html>
