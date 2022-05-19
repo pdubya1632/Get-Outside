@@ -1,14 +1,18 @@
 // get API Key from config object
 const OWMkey = config.OWMkey;
 
+// initiate lat lng global variables, set to Seattle by default
+let lat = "47.608013";
+let lng = "-122.335167";
+
 // get lat lng from autocomplete input
 function initialize() {
   var input = document.getElementById("searchCity");
   var autocomplete = new google.maps.places.Autocomplete(input);
   google.maps.event.addListener(autocomplete, "place_changed", function () {
     var place = autocomplete.getPlace();
-    const lat = place.geometry.location.lat();
-    const lng = place.geometry.location.lng();
+    lat = place.geometry.location.lat();
+    lng = place.geometry.location.lng();
 
     console.log(lat + ", " + lng);
     getHikes(lat, lng);
