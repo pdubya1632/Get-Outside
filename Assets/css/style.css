@@ -1,2 +1,15 @@
-.navbar{
+@import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
+:root{
+    
+}
+.is-1, .subtitle{
+    text-align: center;
+}
+
+.input{
+    max-width: 200px;
+}
+
+.button{
+    border: 0ch;
 }
