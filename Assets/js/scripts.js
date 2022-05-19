@@ -12,7 +12,6 @@ function initialize() {
 
     console.log(lat + ", " + lng);
     getHikes(lat, lng);
-    getWeather(lat, lng);
   });
 }
 
@@ -42,13 +41,13 @@ function callback(results, status) {
 
   const cards = document.getElementById("cards");
 
+  let name = results[i].name;
+
   for (var i = 0; i <= 5; i++) {
     cards.innerHTML +=
         `<div class="card block">
         <header class="card-header">
-            <p class="card-header-title">` +
-            results[i].name +
-            `</p>
+            <p class="card-header-title" data-lon="" data-lng="">${name}</p>
             <button class="card-header-icon" aria-label="more options">
             <span class="icon">
                 <i class="fas fa-angle-down" aria-hidden="true"></i>
@@ -58,6 +57,8 @@ function callback(results, status) {
         </div>`;
   }
 }
+
+// onclick hike > getWeather(lat, lng);
 
 // get weather based on coordinates from google autocomplete
 const getWeather = (lat, lng) => {
