@@ -19,7 +19,7 @@ function initialize() {
 }
 
 // trigger initialize upon page load
-google.maps.event.addDomListener(window, 'load', initialize); 
+google.maps.event.addListener(window, 'load', initialize); 
 
 // get weather based on coordinates from google
 const getWeather = (lat, lng) => {
