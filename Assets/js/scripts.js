@@ -13,15 +13,13 @@ function initialize() {
     console.log(lat + ", " + lng);
     // placeholder for future map load
     // loadMap(latSearch,lngSearch)
-    listHikes(lat, lng);
+    getHikes(lat, lng);
     getWeather(lat, lng);
   });
 }
 
-// trigger initialize upon page load
-google.maps.event.addDomListener(window, "load", initialize);
-
-const listHikes = (lat, lng) => {
+// get 20 'best hikes' based on city search
+const getHikes = (lat, lng) => {
   const coord = new google.maps.LatLng(lat, lng);
 
   const map = new google.maps.Map(document.getElementById("map"), {
@@ -40,6 +38,7 @@ const listHikes = (lat, lng) => {
   service.textSearch(request, callback);
 };
 
+// push first 5 'best hikes' results into Results sidebar
 function callback(results, status) {
   console.log(results);
 
@@ -78,3 +77,6 @@ const getWeather = (lat, lng) => {
       console.log(data);
     });
 };
+
+// trigger initialize upon page load
+google.maps.event.addDomListener(window, "load", initialize);
