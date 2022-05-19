@@ -13,3 +13,9 @@
 .button{
     border: 0ch;
 }
+
+/* MAP */
+
+#map {
+    height: 100%;
+  }
