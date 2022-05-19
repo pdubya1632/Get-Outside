@@ -75,6 +75,7 @@ const getWeather = (lat, lng) => {
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
+
     });
 };
 
