@@ -1,6 +1,7 @@
 // get API Key from config object
 const OWMkey = config.OWMkey;
 
+// get lat lng from autocomplete input
 function initialize() {
     var input = document.getElementById('searchCity');
     var autocomplete = new google.maps.places.Autocomplete(input);
@@ -8,6 +9,7 @@ function initialize() {
         var place = autocomplete.getPlace();
         const lat = place.geometry.location.lat();
         const lng = place.geometry.location.lng();
+        console.log(lat + ", " lng)
         // document.getElementById('lat').value = latSearch;
         // document.getElementById('lon').value = lngSearch;
         // loadMap(latSearch,lngSearch)
@@ -16,7 +18,7 @@ function initialize() {
     });
 }
 
-// run initialize upon page load
+// trigger initialize upon page load
 google.maps.event.addDomListener(window, 'load', initialize); 
 
 // get weather based on coordinates from google
