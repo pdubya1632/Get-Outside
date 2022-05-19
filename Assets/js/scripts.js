@@ -9,11 +9,10 @@ function initialize() {
         var place = autocomplete.getPlace();
         const lat = place.geometry.location.lat();
         const lng = place.geometry.location.lng();
+        
         console.log(lat + ", " + lng);
-        // document.getElementById('lat').value = latSearch;
-        // document.getElementById('lon').value = lngSearch;
+        // placeholder for future map load
         // loadMap(latSearch,lngSearch)
-
         getWeather(lat,lng);
     });
 }
