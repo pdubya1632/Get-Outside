@@ -22,18 +22,18 @@ function initialize() {
 google.maps.event.addDomListener(window, "load", initialize);
 
 const listHikes = (lat, lng) => {
-    const coord = new google.maps.LatLng(lat, lng);
+  const coord = new google.maps.LatLng(lat, lng);
 
-    const map = new google.maps.Map(document.getElementById('map'), {
-        center: coord,
-        zoom: 15
-      });
+  const map = new google.maps.Map(document.getElementById("map"), {
+    center: coord,
+    zoom: 15,
+  });
 
   const request = {
     location: coord,
     radius: "500",
     query: "best hikes",
-    type: ["point_of_interest"]
+    type: ["point_of_interest"],
   };
 
   const service = new google.maps.places.PlacesService(map);
@@ -42,6 +42,24 @@ const listHikes = (lat, lng) => {
 
 function callback(results, status) {
   console.log(results);
+
+  const cards = document.getElementById("cards");
+
+  for (var i = 0; i <= 5; i++) {
+    cards.innerHTML +=
+        `<div class="card block">
+        <header class="card-header">
+            <p class="card-header-title">` +
+            results[i].name +
+            `</p>
+            <button class="card-header-icon" aria-label="more options">
+            <span class="icon">
+                <i class="fas fa-angle-down" aria-hidden="true"></i>
+            </span>
+            </button>
+        </header>
+        </div>`;
+  }
 }
 
 // get weather based on coordinates from google
