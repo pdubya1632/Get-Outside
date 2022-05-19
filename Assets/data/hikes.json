@@ -1,0 +1,27 @@
+[
+    {
+        "hike": "Poo Poo Point",
+        "lat": 47.5000,
+        "lon": -122.0220
+    },
+    {
+        "hike": "Rattlesnake Ridge",
+        "lat": 47.4458,
+        "lon": -121.7950
+    },
+    {
+        "hike": "Mount Si",
+        "lat": 47.5077,
+        "lon": -121.7398
+    },
+    {
+        "hike": "Mount Pilchuck",
+        "lat": 48.0579,
+        "lon": -121.7968
+    },
+    {
+        "hike": "Mailbox Peak",
+        "lat": 47.4624,
+        "lon": -121.6393
+    }
+]
