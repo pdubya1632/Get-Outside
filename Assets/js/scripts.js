@@ -11,8 +11,6 @@ function initialize() {
     const lng = place.geometry.location.lng();
 
     console.log(lat + ", " + lng);
-    // placeholder for future map load
-    // loadMap(latSearch,lngSearch)
     getHikes(lat, lng);
     getWeather(lat, lng);
   });
@@ -61,7 +59,7 @@ function callback(results, status) {
   }
 }
 
-// get weather based on coordinates from google
+// get weather based on coordinates from google autocomplete
 const getWeather = (lat, lng) => {
   let queryURL =
     "https://api.openweathermap.org/data/2.5/onecall?lat=" +
