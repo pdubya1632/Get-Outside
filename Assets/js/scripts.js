@@ -7,6 +7,8 @@ let map;
 let bounds;
 let service;
 
+let results = document.getElementsByClassName(".results");
+
 // get lat lng from city search
 function initialize() {
   bounds = new google.maps.LatLngBounds();
