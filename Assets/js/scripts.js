@@ -13,7 +13,7 @@ function initialize() {
   let infoWindow = new google.maps.InfoWindow();
   let currentInfoWindow = infoWindow;
 
-  const input = document.getElementById("searchCity");
+  const input = document.getElementById("search-input");
   const autocomplete = new google.maps.places.Autocomplete(input);
   google.maps.event.addListener(autocomplete, "place_changed", function () {
     var place = autocomplete.getPlace();
