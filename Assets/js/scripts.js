@@ -13,7 +13,7 @@ function initialize() {
     var place = autocomplete.getPlace();
     lat = place.geometry.location.lat();
     lng = place.geometry.location.lng();
-
+    console.log(place);
     console.log(lat + ", " + lng);
     getHikes(lat, lng);
   });
@@ -30,9 +30,9 @@ const getHikes = (lat, lng) => {
 
   const request = {
     location: coord,
-    radius: "500",
+    radius: "1000",
     query: "best hikes",
-    type: ["point_of_interest"],
+    type: ["point_of_interest"]
   };
 
   const service = new google.maps.places.PlacesService(map);
@@ -45,7 +45,7 @@ function listHikes(results, status) {
 
   const cards = document.getElementById("cards");
 
-  for (var i = 0; i <= 5; i++) {
+  for (var i = 0; i < 5; i++) {
     let name = results[i].name;
     cards.innerHTML += `<div class="card block">
         <header class="card-header">
