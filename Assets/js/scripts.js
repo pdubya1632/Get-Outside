@@ -7,20 +7,24 @@ let map;
 let bounds;
 let service;
 
+let searchResults = document.querySelector(".results");
+
 // get lat lng from city search
 function initialize() {
   bounds = new google.maps.LatLngBounds();
   let infoWindow = new google.maps.InfoWindow();
   let currentInfoWindow = infoWindow;
 
-  const input = document.getElementById("searchCity");
+  const input = document.getElementById("search-input");
   const autocomplete = new google.maps.places.Autocomplete(input);
   google.maps.event.addListener(autocomplete, "place_changed", function () {
     var place = autocomplete.getPlace();
     lat = place.geometry.location.lat();
     lng = place.geometry.location.lng();
+
     console.log(place);
     console.log(lat + ", " + lng);
+    
     getHikes(lat, lng);
   });
 }
@@ -29,7 +33,11 @@ function initialize() {
 const getHikes = (lat, lng) => {
   const coord = new google.maps.LatLng(lat, lng);
 
-  map = new google.maps.Map(document.getElementById("map"), {
+  const mapDiv = document.createElement("div");
+  mapDiv.id = "map";
+  searchResults.append(mapDiv);
+
+  map = new google.maps.Map(mapDiv, {
     center: coord,
     zoom: 15,
   });
@@ -54,11 +62,9 @@ function callback(results, status) {
 function listHikes(results, status) {
   console.log(results);
 
-  const cards = document.getElementById("cards");
-
   for (var i = 0; i < 5; i++) {
     let name = results[i].name;
-    cards.innerHTML += `<div class="card block">
+    searchResults.innerHTML += `<div class="card block">
           <header class="card-header">
               <p class="card-header-title hikeBtn" data-lat="${lat}" data-lng="${lng}">${name}</p>
               <button class="card-header-icon" aria-label="more options">
