@@ -1,11 +1,11 @@
 // get API Key from config object
 const OWMkey = config.OWMkey;
 
-// initiate lat lng global variables, set to Seattle by default
 let lat = "47.608013";
 let lng = "-122.335167";
 let map;
 let bounds;
+let service;
 
 // get lat lng from city search
 function initialize() {
@@ -107,7 +107,7 @@ function createMarkers(places) {
        * If we fetch the details for all place results as soon as we get
        * the search response, we will hit API rate limits. */
       // service.getDetails(request, (placeResult, status) => {
-      //   showDetails(placeResult, marker, status)
+      //   showDetails(placeResult, marker, status);
       // });
     });
 
@@ -115,6 +115,29 @@ function createMarkers(places) {
   });
 
   map.fitBounds(bounds);
+}
+
+// Builds an InfoWindow to display details above the marker
+function showDetails(placeResult, marker, status) {
+  if (status == google.maps.places.PlacesServiceStatus.OK) {
+    let placeInfowindow = new google.maps.InfoWindow();
+    let rating = "None";
+    if (placeResult.rating) rating = placeResult.rating;
+    placeInfowindow.setContent(
+      "<div><strong>" +
+        placeResult.name +
+        "</strong><br>" +
+        "Rating: " +
+        rating +
+        "</div>"
+    );
+    placeInfowindow.open(marker.map, marker);
+    currentInfoWindow.close();
+    currentInfoWindow = placeInfowindow;
+    showPanel(placeResult);
+  } else {
+    console.log("showDetails failed: " + status);
+  }
 }
 
 // get weather based on coordinates of selected hike
