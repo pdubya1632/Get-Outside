@@ -7,7 +7,7 @@ let map;
 let bounds;
 let service;
 
-let results = document.getElementsByClassName(".results");
+let searchResults = document.getElementsByClassName(".results");
 
 // get lat lng from city search
 function initialize() {
@@ -30,6 +30,8 @@ function initialize() {
 // get 20 'best hikes' nearby lat lng
 const getHikes = (lat, lng) => {
   const coord = new google.maps.LatLng(lat, lng);
+
+  searchResults.innerHTML += `<div id="map"></div>`;
 
   map = new google.maps.Map(document.getElementById("map"), {
     center: coord,
