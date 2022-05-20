@@ -6,3 +6,10 @@
 .block:not(:last-child) {
     margin-bottom: 1.5rem;
 }
+
+.hero {
+    background-image: url("https://source.unsplash.com/N-aTikX-b00/1600x900");
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
