@@ -1,7 +1,13 @@
-/* MAP */
+
+/* can some of these styles be pushed to a bulma class? */
+
 #map {
-    height: 100%;
-  }
+    height: 500px;
+}
+
+#results {
+  height: 100%;
+}
 
 .block:not(:last-child) {
     margin-bottom: 1.5rem;
