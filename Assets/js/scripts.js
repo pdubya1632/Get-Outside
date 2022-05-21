@@ -9,25 +9,25 @@ let service;
  * Initiliaze function, called on page load
  */
 function initialize() {
-  // clear previous results
-  document.querySelector("#result-list").innerHTML = "";
+    // clear previous results
+    document.querySelector("#result-list").innerHTML = "";
 
-  // create a new map object
-  bounds = new google.maps.LatLngBounds();
-  infoWindow = new google.maps.InfoWindow();
-  currentInfoWindow = infoWindow;
+    // create a new map object
+    bounds = new google.maps.LatLngBounds();
+    infoWindow = new google.maps.InfoWindow();
+    currentInfoWindow = infoWindow;
 
-  const input = document.getElementById("search-input");
-  const autocomplete = new google.maps.places.Autocomplete(input);
+    const input = document.getElementById("search-input");
+    const autocomplete = new google.maps.places.Autocomplete(input);
 
-  // add listener for autocomplete
-  google.maps.event.addListener(autocomplete, "place_changed", function () {
-    let place = autocomplete.getPlace();
-    lat = place.geometry.location.lat();
-    lng = place.geometry.location.lng();
+    // add listener for autocomplete
+    google.maps.event.addListener(autocomplete, "place_changed", function () {
+        let place = autocomplete.getPlace();
+        lat = place.geometry.location.lat();
+        lng = place.geometry.location.lng();
 
-    loadMap(lat, lng);
-  });
+        loadMap(lat, lng);
+    });
 }
 
 /**
@@ -36,20 +36,20 @@ function initialize() {
  * @param {number} lngSearch map longitude
  */
 function loadMap(latSearch, lngSearch) {
-  const coord = new google.maps.LatLng(lat, lng);
+    const coord = new google.maps.LatLng(lat, lng);
 
-  const mapColumn = document.getElementById("result-map");
-  mapColumn.innerHTML = "";
-  const mapDiv = document.createElement("div");
-  mapDiv.id = "map";
-  mapColumn.append(mapDiv);
+    const mapColumn = document.getElementById("result-map");
+    mapColumn.innerHTML = "";
+    const mapDiv = document.createElement("div");
+    mapDiv.id = "map";
+    mapColumn.append(mapDiv);
 
-  map = new google.maps.Map(mapDiv, {
-    center: coord,
-    zoom: 14,
-  });
+    map = new google.maps.Map(mapDiv, {
+        center: coord,
+        zoom: 14,
+    });
 
-  getList(coord);
+    getList(coord);
 }
 
 /**
@@ -58,20 +58,20 @@ function loadMap(latSearch, lngSearch) {
  * @param {object} coord google.maps.LagLng object
  */
 function getList(coord) {
-  let request = {
-    location: coord,
-    radius: "10000",
-    query: "mountain trail",
-  };
+    let request = {
+        location: coord,
+        radius: "10000",
+        query: "mountain trail",
+    };
 
-  service = new google.maps.places.PlacesService(map);
-  service.textSearch(request, function(results, status) {
-    if (status === google.maps.places.PlacesServiceStatus.OK) {
-      document.querySelector("#result-list").innerHTML = "";
-      handlePlacesResults(results);
-      map.setCenter(results[0].geometry.location);
-    }
-  });
+    service = new google.maps.places.PlacesService(map);
+    service.textSearch(request, function (results, status) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+            document.querySelector("#result-list").innerHTML = "";
+            handlePlacesResults(results);
+            map.setCenter(results[0].geometry.location);
+        }
+    });
 }
 
 /**
@@ -82,7 +82,7 @@ function getList(coord) {
 function handlePlacesResults(results) {
     let numResults = results.length;
     if (numResults > 5) {
-      numResults = 5;
+        numResults = 5;
     }
 
     for (let i = 0; i < numResults; i++) {
@@ -104,34 +104,34 @@ function handlePlacesResults(results) {
  * @param {object} place place result object 
  */
 function createMarkers(place) {
-  let markers = [];
-    
+    let markers = [];
+
     let marker = new google.maps.Marker({
-      position: place.geometry.location,
-      map: map,
-      title: place.name,
+        position: place.geometry.location,
+        map: map,
+        title: place.name,
     });
 
     markers.push(marker);
 
     // Add click listener to each marker
     google.maps.event.addListener(marker, "click", () => {
-      let request = {
-        placeId: place.place_id,
-        fields: [
-          "name",
-          "formatted_address",
-          "geometry",
-          "rating",
-          "website",
-          "photos",
-          "place_id"
-        ],
-      };
+        let request = {
+            placeId: place.place_id,
+            fields: [
+                "name",
+                "formatted_address",
+                "geometry",
+                "rating",
+                "website",
+                "photos",
+                "place_id"
+            ],
+        };
 
-      service.getDetails(request, (placeResult, status) => {
-        showDetails(placeResult, marker, status);
-      });
+        service.getDetails(request, (placeResult, status) => {
+            showDetails(placeResult, marker, status);
+        });
     });
 
     bounds.extend(place.geometry.location);
@@ -146,30 +146,30 @@ function createMarkers(place) {
  * @param {string} status api call status
  */
 function showDetails(placeResult, marker, status) {
-  if (status == google.maps.places.PlacesServiceStatus.OK) {
-    let placeInfowindow = new google.maps.InfoWindow();
-    let rating = "None";
+    if (status == google.maps.places.PlacesServiceStatus.OK) {
+        let placeInfowindow = new google.maps.InfoWindow();
+        let rating = "None";
 
-    if (placeResult.rating) rating = placeResult.rating;
-    placeInfowindow.setContent(
-      `<div>
+        if (placeResult.rating) rating = placeResult.rating;
+        placeInfowindow.setContent(
+            `<div>
       <strong>${placeResult.name}</strong>
       <br>
       Rating:${rating}
       <br>
       <a href="https://www.google.com/maps/search/?api=1&query=Google&query_place_id=${placeResult.place_id}" target="_blank">Get Directions</a>
       </div>`
-    );
-    placeInfowindow.open(marker.map, marker);
-    currentInfoWindow.close();
-    currentInfoWindow = placeInfowindow;
+        );
+        placeInfowindow.open(marker.map, marker);
+        currentInfoWindow.close();
+        currentInfoWindow = placeInfowindow;
 
-    // todo: connect markers and list items
-    //let cards = document.querySelectorAll(".card");
-    //let value = cards.getAttribute("data-state");
-  } else {
-    console.log("showDetails failed: " + status);
-  }
+        // todo: connect markers and list items
+        //let cards = document.querySelectorAll(".card");
+        //let value = cards.getAttribute("data-state");
+    } else {
+        console.log("showDetails failed: " + status);
+    }
 }
 
 /**
@@ -182,12 +182,12 @@ async function getWeather(lat, lng) {
     const queryURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lng}&units=imperial&exclude=minutely,hourly,alerts&appid=${config.OWMkey}`;
 
     return fetch(queryURL)
-    .then(response => {
-        if (response.ok) {
-            return response.json();
-        }
-    })
-    .catch(error => console.log(`Error fetching weather for ${lat}, ${lng}: ${error}`));
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+        })
+        .catch(error => console.log(`Error fetching weather for ${lat}, ${lng}: ${error}`));
 }
 
 /**
@@ -222,7 +222,7 @@ function createResultCard(searchResultObj) {
     resultDetails.classList.add(...cls);
     let ratingText = "No Ratings Yet";
     if (searchResultObj.rating) {
-      ratingText = searchResultObj.rating + " Stars";
+        ratingText = searchResultObj.rating + " Stars";
     }
     resultDetails.innerHTML = `<p class="is-size-5 has-text-centered has-text-weight-semibold">${ratingText}</p>
                                 <p class="is-size-7 has-text-centered">${searchResultObj.address}</p>`;
@@ -235,18 +235,18 @@ function createResultCard(searchResultObj) {
     containerBodyEl.append(resultDetails);
 
     getWeather(searchResultObj.lat, searchResultObj.lng)
-    .then(data => {
-        const currentWeatherObj = {
-            "Temp": Math.round(data.current.temp) + "°F",
-            "Wind": Math.round(data.current.wind_speed) + " MPH",
-            "Humidity": Math.round(data.current.humidity) + "%",
-            "UV Index": Math.round(data.current.uvi),
-            "icon": data.current.weather[0].icon
-        };
-        containerBodyEl.append(createWeatherCard(currentWeatherObj), footer);
-        containterCardEl.append(containerHeaderEl, containerBodyEl);
-        document.querySelector('#result-list').append(containterCardEl);
-    });
+        .then(data => {
+            const currentWeatherObj = {
+                "Temp": Math.round(data.current.temp) + "°F",
+                "Wind": Math.round(data.current.wind_speed) + " MPH",
+                "Humidity": Math.round(data.current.humidity) + "%",
+                "UV Index": Math.round(data.current.uvi),
+                "icon": data.current.weather[0].icon
+            };
+            containerBodyEl.append(createWeatherCard(currentWeatherObj), footer);
+            containterCardEl.append(containerHeaderEl, containerBodyEl);
+            document.querySelector('#result-list').append(containterCardEl);
+        });
 }
 
 /**
