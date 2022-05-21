@@ -215,7 +215,7 @@ function createResultCard(searchResultObj) {
     cls = ["container-header", "card-header", "mb-2"];
     containerHeaderEl.classList.add(...cls);
     const headerPEl = document.createElement("p");
-    headerPEl.classList.add("card-header-title", "has-background-warning-light", "has-text-info-dark", "is-size-4", "pl-5");
+    headerPEl.classList.add("card-header-title", "has-background-warning-light", "has-text-info-dark", "is-size-5", "pl-5");
     headerPEl.textContent = searchResultObj.name;
     containerHeaderEl.append(headerPEl);
 
@@ -228,7 +228,7 @@ function createResultCard(searchResultObj) {
     const resultDetails = document.createElement("div");
     cls = ["result-details", "card-text", "mb-3"];
     resultDetails.classList.add(...cls);
-    resultDetails.innerHTML = `<p class="is-size-4 has-text-centered has-text-weight-semibold">${searchResultObj.rating} Stars</p>
+    resultDetails.innerHTML = `<p class="is-size-5 has-text-centered has-text-weight-semibold">${searchResultObj.rating} Stars</p>
                                 <p class="is-size-6 has-text-centered">${searchResultObj.address}</p>`;
 
     const footer = document.createElement("footer");
