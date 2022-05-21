@@ -47,7 +47,7 @@ function loadMap(latSearch, lngSearch) {
 function getList(coord) {
   let request = {
     location: coord,
-    radius: "5000",
+    radius: "10000",
     query: "best hikes",
   };
 
