@@ -1,13 +1,14 @@
 // get API Key from config object
 const OWMkey = config.OWMkey;
 
-// set default lat/lng to Seattle
-let lat = "47.608013";
-let lng = "-122.335167";
-
+let lat;
+let lng;
 let map;
+let coord;
 let bounds;
 let service;
+
+const mapDiv = document.getElementById("map");
 
 // get lat lng from city search
 function initialize() {
@@ -18,19 +19,19 @@ function initialize() {
   const input = document.getElementById("search-input");
   const autocomplete = new google.maps.places.Autocomplete(input);
   google.maps.event.addListener(autocomplete, "place_changed", function () {
-    var place = autocomplete.getPlace();
+    let place = autocomplete.getPlace();
     lat = place.geometry.location.lat();
     lng = place.geometry.location.lng();
 
     console.log(place);
     console.log(lat + ", " + lng);
 
-    getHikes(lat, lng);
+    loadMap(lat, lng);
   });
 }
 
-// get 20 'best hikes' nearby lat lng
-const getHikes = (lat, lng) => {
+// load map centered on search location
+function loadMap(latSearch, lngSearch) {
   const coord = new google.maps.LatLng(lat, lng);
 
   const mapColumn = document.getElementById("mapColumn");
@@ -43,23 +44,30 @@ const getHikes = (lat, lng) => {
     zoom: 15,
   });
 
-  const request = {
-    location: coord,
-    radius: "10000",
-    query: "best hikes",
-  };
+  getList(coord);
 
-  const service = new google.maps.places.PlacesService(map);
-  service.textSearch(request, callback);
 };
 
-function callback(results, status) {
+function getList(coord) {
+
+  let request = {
+    location: coord,
+    radius: "5000",
+    keyword: "best hikes"
+  };
+
+  service = new google.maps.places.PlacesService(map);
+  service.nearbySearch(request, listCallback);
+  
+};
+
+function listCallback(results, status) {
   if (status == google.maps.places.PlacesServiceStatus.OK) {
     listHikes(results);
   }
 }
 
-// push first 5 'best hikes' results onto page
+// push first 5 'best hikes' results into list
 function listHikes(results, status) {
   console.log(results);
 
@@ -117,6 +125,7 @@ function createMarkers(places) {
 
     // Add click listener to each marker
     google.maps.event.addListener(marker, "click", () => {
+      
       let request = {
         placeId: place.place_id,
         fields: [
@@ -129,7 +138,9 @@ function createMarkers(places) {
         ],
       };
 
-      /* Only fetch the details of a place when the user clicks on a marker. */
+      console.log(request);
+
+      // /* Only fetch the details of a place when the user clicks on a marker. */
       // service.getDetails(request, (placeResult, status) => {
       //   showDetails(placeResult, marker, status);
       // });
@@ -158,13 +169,13 @@ function showDetails(placeResult, marker, status) {
     placeInfowindow.open(marker.map, marker);
     currentInfoWindow.close();
     currentInfoWindow = placeInfowindow;
-    showPanel(placeResult);
+    // showPanel(placeResult);
   } else {
     console.log("showDetails failed: " + status);
   }
 }
 
-// get weather based on coordinates of selected hike
+// get weather based on coordinates of selected list item
 const getWeather = (lat, lng) => {
   let queryURL =
     "https://api.openweathermap.org/data/2.5/onecall?lat=" +
