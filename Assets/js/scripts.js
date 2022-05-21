@@ -1,10 +1,11 @@
-// set default lat/lng to Seattle
-let lat = "47.608013";
-let lng = "-122.335167";
-
 let map;
+let coord;
+let infoWindow;
+let currentInfoWindow;
 let bounds;
 let service;
+
+const mapDiv = document.getElementById("map");
 
 // get lat lng from city search
 function initialize() {
@@ -15,19 +16,19 @@ function initialize() {
   const input = document.getElementById("search-input");
   const autocomplete = new google.maps.places.Autocomplete(input);
   google.maps.event.addListener(autocomplete, "place_changed", function () {
-    var place = autocomplete.getPlace();
+    let place = autocomplete.getPlace();
     lat = place.geometry.location.lat();
     lng = place.geometry.location.lng();
 
     console.log(place);
     console.log(lat + ", " + lng);
 
-    getHikes(lat, lng);
+    loadMap(lat, lng);
   });
 }
 
-// get 20 'best hikes' nearby lat lng
-const getHikes = (lat, lng) => {
+// load map centered on search location
+function loadMap(latSearch, lngSearch) {
   const coord = new google.maps.LatLng(lat, lng);
 
   const mapColumn = document.getElementById("mapColumn");
@@ -40,29 +41,36 @@ const getHikes = (lat, lng) => {
     zoom: 15,
   });
 
-  const request = {
+  getList(coord);
+}
+
+function getList(coord) {
+  let request = {
     location: coord,
-    radius: "10000",
+    radius: "5000",
     query: "best hikes",
   };
 
-  const service = new google.maps.places.PlacesService(map);
-  service.textSearch(request, callback);
-};
+  service = new google.maps.places.PlacesService(map);
+  service.textSearch(request, listCallback);
+}
 
-function callback(results, status) {
+function listCallback(results, status) {
   if (status == google.maps.places.PlacesServiceStatus.OK) {
     listHikes(results);
   }
 }
 
-// push first 5 'best hikes' results onto page
+// push first 5 'best hikes' results into list
 function listHikes(results, status) {
   console.log(results);
 
   for (var i = 0; i < 5; i++) {
     let name = results[i].name;
-    
+    let address = results[i].formatted_address;
+    let rating = results[i].rating;
+    let placeId = results[i].place_id;
+
     const listColumn = document.getElementById("listColumn");
     listColumn.innerHTML += `<div class="card">
           <header class="card-header">
@@ -75,19 +83,16 @@ function listHikes(results, status) {
               </span>
             </button>
           </header>
-          <div class="card-image">
-          <figure class="image is-4by3">
-            <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
-          </figure>
-        </div>
           <div class="card-content">
             <div class="content">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
-              <a href="#">@bulmaio</a>.
+            <ul>
+            <li>Rating: ${rating}</li>
+            <li>${address}</li>
+            </ul>
             </div>
           </div>
           <footer class="card-footer">
-            <a href="#" class="card-footer-item">Get Directions</a>
+            <a href="https://www.google.com/maps/search/?api=1&query=Google&query_place_id=${placeId}" class="card-footer-item" target="_blank">Get Directions</a>
           </footer>
         </div>`;
   }
@@ -126,10 +131,9 @@ function createMarkers(places) {
         ],
       };
 
-      /* Only fetch the details of a place when the user clicks on a marker. */
-      // service.getDetails(request, (placeResult, status) => {
-      //   showDetails(placeResult, marker, status);
-      // });
+      service.getDetails(request, (placeResult, status) => {
+        showDetails(placeResult, marker, status);
+      });
     });
 
     bounds.extend(place.geometry.location);
@@ -143,6 +147,7 @@ function showDetails(placeResult, marker, status) {
   if (status == google.maps.places.PlacesServiceStatus.OK) {
     let placeInfowindow = new google.maps.InfoWindow();
     let rating = "None";
+
     if (placeResult.rating) rating = placeResult.rating;
     placeInfowindow.setContent(
       "<div><strong>" +
@@ -155,7 +160,7 @@ function showDetails(placeResult, marker, status) {
     placeInfowindow.open(marker.map, marker);
     currentInfoWindow.close();
     currentInfoWindow = placeInfowindow;
-    showPanel(placeResult);
+    // showPanel(placeResult);
   } else {
     console.log("showDetails failed: " + status);
   }
