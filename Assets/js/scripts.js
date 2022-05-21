@@ -73,9 +73,9 @@ function listHikes(place) {
     let placeId = place.place_id;
 
     const listColumn = document.getElementById("listColumn");
-    listColumn.innerHTML += `<div class="card">
-          <header class="card-header">
-            <p class="card-header-title hikeBtn" data-lat="${lat}" data-lng="${lng}">
+    listColumn.innerHTML += `<div class="card" data-placeId="${placeId}" data-lat="${lat}" data-lng="${lng}">  
+    <header class="card-header">
+            <p class="card-header-title hikeBtn">
             ${name}
             </p>
             <button class="card-header-icon" aria-label="more options">
@@ -88,7 +88,7 @@ function listHikes(place) {
             <div class="content">
             <ul>
             <li>Rating: ${rating}</li>
-            <li>${address}</li>
+            <li>Current Conditions below...</li>
             </ul>
             </div>
           </div>
@@ -123,6 +123,7 @@ function createMarkers(place) {
           "rating",
           "website",
           "photos",
+          "place_id"
         ],
       };
 
@@ -132,9 +133,7 @@ function createMarkers(place) {
     });
 
     bounds.extend(place.geometry.location);
-  // });
-
-  map.fitBounds(bounds);
+    map.fitBounds(bounds);
 
 }
 
@@ -146,16 +145,21 @@ function showDetails(placeResult, marker, status) {
 
     if (placeResult.rating) rating = placeResult.rating;
     placeInfowindow.setContent(
-      "<div><strong>" +
-        placeResult.name +
-        "</strong><br>" +
-        "Rating: " +
-        rating +
-        "</div>"
+      `<div>
+      <strong>${placeResult.name}</strong>
+      <br>
+      Rating:${rating}
+      <br>
+      <a href="https://www.google.com/maps/search/?api=1&query=Google&query_place_id=${placeResult.place_id}" target="_blank">Get Directions</a>
+      </div>`
     );
     placeInfowindow.open(marker.map, marker);
     currentInfoWindow.close();
     currentInfoWindow = placeInfowindow;
+
+    // todo: connect markers and list items
+    let cards = document.querySelectorAll(".card");
+    let value = cards.getAttribute("data-state");
   } else {
     console.log("showDetails failed: " + status);
   }
