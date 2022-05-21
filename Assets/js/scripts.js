@@ -65,7 +65,10 @@ function listHikes(results, status) {
 
   for (var i = 0; i < 5; i++) {
     let name = results[i].name;
-    
+    let address = results[i].formatted_address;
+    let rating = results[i].rating;
+    let placeId = results[i].place_id;
+
     const listColumn = document.getElementById("listColumn");
     listColumn.innerHTML += `<div class="card">
           <header class="card-header">
@@ -80,12 +83,14 @@ function listHikes(results, status) {
           </header>
           <div class="card-content">
             <div class="content">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
-              <a href="#">@bulmaio</a>.
+            <ul>
+            <li>Rating: ${rating}</li>
+            <li>${address}</li>
+            </ul>
             </div>
           </div>
           <footer class="card-footer">
-            <a href="#" class="card-footer-item">Get Directions</a>
+            <a href="https://www.google.com/maps/search/?api=1&query=Google&query_place_id=${placeId}" class="card-footer-item" target="_blank">Get Directions</a>
           </footer>
         </div>`;
   }
