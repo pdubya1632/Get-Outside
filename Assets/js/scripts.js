@@ -1,8 +1,3 @@
-// get API Key from config object
-const OWMkey = config.OWMkey;
-
-let lat;
-let lng;
 let map;
 let coord;
 let infoWindow;
@@ -171,25 +166,139 @@ function showDetails(placeResult, marker, status) {
   }
 }
 
-// get weather based on coordinates of selected list item
-const getWeather = (lat, lng) => {
-  let queryURL =
-    "https://api.openweathermap.org/data/2.5/onecall?lat=" +
-    lat +
-    "&lon=" +
-    lng +
-    "&units=imperial&exclude=minutely,hourly,alerts&appid=" +
-    OWMkey;
+/**
+ * Get the weather data for a location
+ * @param {number} lat latitude of hike location 
+ * @param {number} lng longitude of hike location
+ * @returns {Promise} promise from response.json()
+ */
+async function getWeather(lat, lng) {
+    const queryURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lng}&units=imperial&exclude=minutely,hourly,alerts&appid=${config.OWMkey}`;
 
-  fetch(queryURL)
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
+    return fetch(queryURL)
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        }
+    })
+    .catch(error => console.log(`Error fetching weather for ${lat}, ${lng}: ${error}`));
+}
 
-      let temp = document.getElementById("temp");
-      temp.innerHTML = data.current.temp;
+/**
+ * Creates card for a search result
+ * @param {object} searchResultObj object that encapsulates relevant data for each search result from the google places api 
+ * @returns {object} A card div
+ */
+function createResultCard(searchResult) {
+
+    // test result object
+    searchResultObj = {
+        lat: 47.608013,
+        lng: -122.335167,
+        name: "Hike name",
+        rating: 4.7,
+        numReviews: 123,
+        elevation: 3200
+    };
+
+    // create card container
+    const containterCardEl = document.createElement("div");
+    let cls = ["container-card", "card", "is-rounded", "my-3"];
+    containterCardEl.classList.add(...cls);
+
+    // create card header
+    const containerHeaderEl = document.createElement("div");
+    cls = ["container-header", "card-header", "mb-2"];
+    containerHeaderEl.classList.add(...cls);
+    const headerPEl = document.createElement("p");
+    headerPEl.classList.add("card-header-title", "has-background-info", "has-text-white-bis", "is-size-4");
+    headerPEl.textContent = searchResultObj.name;
+    containerHeaderEl.append(headerPEl);
+
+    // create container card body div
+    const containerBodyEl = document.createElement("div");
+    cls = ["container-body", "card-content"];
+    containerBodyEl.classList.add(...cls);
+
+    getWeather(searchResultObj.lat, searchResultObj.lng)
+    .then(data => {
+        const currentWeatherObj = {
+            "Temp": Math.round(data.current.temp) + "°F",
+            "Wind": Math.round(data.current.wind_speed) + " MPH",
+            "Humidity": Math.round(data.current.humidity) + "%",
+            "UV Index": Math.round(data.current.uvi),
+            "icon": data.current.weather[0].icon
+        };
+
+        containerBodyEl.append(createWeatherCard(currentWeatherObj));
+        containterCardEl.append(containerHeaderEl, containerBodyEl);
+        document.querySelector('#listColumn').append(containterCardEl);
     });
-};
+}
+
+/**
+ * Creates the weather card component
+ * @param {object} weatherDataObj object that encapsulates weather data
+ * @returns weather card component
+ */
+function createWeatherCard(weatherDataObj) {
+    // create weather card
+    const weatherCardContainerEl = document.createElement("div");
+    cls = ["weather-card-container", "p-0", "is-6", "columns", "is-centered"];
+    weatherCardContainerEl.classList.add(...cls);
+
+    // create weather card
+    const weatherCardEl = document.createElement("div");
+    cls = ["weather-card", "card", "m-1"];
+    weatherCardEl.classList.add(...cls);
+
+    // create weather image
+    const weatherCardImgEl = document.createElement("img");
+    cls = ["weather-img", "image", "is-48x48"];
+    weatherCardImgEl.classList.add(...cls);
+    weatherCardImgEl.setAttribute("src", "https://openweathermap.org/img/wn/" + weatherDataObj["icon"] + "@2x.png");
+    weatherCardImgEl.setAttribute("alt", "weather condition image");
+
+    // create weather card header
+    const weatherHeaderEl = document.createElement("div");
+    cls = ["weather-header", "card-header", "has-text-centered"];
+    weatherHeaderEl.classList.add(...cls);
+    const headerPEl = document.createElement("p");
+    headerPEl.classList.add("card-header-title", "pr-0", "has-text-info");
+    headerPEl.textContent = "Current Conditions";
+    weatherHeaderEl.append(headerPEl, weatherCardImgEl);
+
+    // create weather body
+    const weatherCardBodyEl = document.createElement("div");
+    cls = ["weather-body", "card-content", "column", "is-10", "is-offset-2"];
+    weatherCardBodyEl.classList.add(...cls);
+
+    // create weather text
+    const weatherCardTextEl = document.createElement("div");
+    cls = ["weather-text", "content"];
+    weatherCardTextEl.classList.add(...cls);
+
+    // loop over the weatherDataObj and add to weatherCartTextEl
+    for (const property in weatherDataObj) {
+
+        // skip icon property
+        if (property === "icon") {
+            break;
+        }
+
+        const propertyDiv = document.createElement("div");
+        propertyDiv.textContent = `${property}: ${weatherDataObj[property]}`;
+        propertyDiv.classList.add("px-2")
+
+        weatherCardTextEl.append(propertyDiv);
+    }
+
+    // append weather elements to card
+    weatherCardBodyEl.append(weatherCardTextEl);
+    weatherCardEl.append(weatherHeaderEl, weatherCardBodyEl);
+    weatherCardContainerEl.append(weatherCardEl);
+    return weatherCardContainerEl;
+}
 
 // trigger initialize upon page load
 google.maps.event.addDomListener(window, "load", initialize);
