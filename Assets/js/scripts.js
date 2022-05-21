@@ -110,7 +110,7 @@ function listHikes(results, status) {
 
 // Set markers at the location of each place result
 function createMarkers(places) {
-  places.forEach((place) => {
+  places.slice(0,5).forEach((place) => {
     let marker = new google.maps.Marker({
       position: place.geometry.location,
       map: map,
