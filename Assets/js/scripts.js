@@ -80,38 +80,38 @@ function handlePlacesResults(results) {
 }
 
 // push first 5 'best hikes' results into list
-function listHikes(place) {
+// function listHikes(place) {
 
-    let name = place.name;
-    let address = place.formatted_address;
-    let rating = place.rating;
-    let placeId = place.place_id;
+//     let name = place.name;
+//     let address = place.formatted_address;
+//     let rating = place.rating;
+//     let placeId = place.place_id;
 
-    const listColumn = document.getElementById("listColumn");
-    listColumn.innerHTML += `<div class="card" data-placeId="${placeId}" data-lat="${lat}" data-lng="${lng}">  
-    <header class="card-header">
-            <p class="card-header-title hikeBtn">
-            ${name}
-            </p>
-            <button class="card-header-icon" aria-label="more options">
-              <span class="icon">
-                <i class="fas fa-angle-down" aria-hidden="true"></i>
-              </span>
-            </button>
-          </header>
-          <div class="card-content">
-            <div class="content">
-            <ul>
-            <li>Rating: ${rating}</li>
-            <li>Current Conditions below...</li>
-            </ul>
-            </div>
-          </div>
-          <footer class="card-footer">
-            <a href="https://www.google.com/maps/search/?api=1&query=Google&query_place_id=${placeId}" class="card-footer-item" target="_blank">Get Directions</a>
-          </footer>
-        </div>`;
-  }
+//     const listColumn = document.getElementById("listColumn");
+//     listColumn.innerHTML += `<div class="card" data-placeId="${placeId}" data-lat="${lat}" data-lng="${lng}">  
+//     <header class="card-header">
+//             <p class="card-header-title hikeBtn">
+//             ${name}
+//             </p>
+//             <button class="card-header-icon" aria-label="more options">
+//               <span class="icon">
+//                 <i class="fas fa-angle-down" aria-hidden="true"></i>
+//               </span>
+//             </button>
+//           </header>
+//           <div class="card-content">
+//             <div class="content">
+//             <ul>
+//             <li>Rating: ${rating}</li>
+//             <li>Current Conditions below...</li>
+//             </ul>
+//             </div>
+//           </div>
+//           <footer class="card-footer">
+//             <a href="https://www.google.com/maps/search/?api=1&query=Google&query_place_id=${placeId}" class="card-footer-item" target="_blank">Get Directions</a>
+//           </footer>
+//         </div>`;
+//   }
 
 // Set markers at the location of each place result
 function createMarkers(place) {
