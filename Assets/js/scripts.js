@@ -31,7 +31,7 @@ function initialize() {
 function loadMap(latSearch, lngSearch) {
   const coord = new google.maps.LatLng(lat, lng);
 
-  const mapColumn = document.getElementById("mapColumn");
+  const mapColumn = document.getElementById("result-map");
   const mapDiv = document.createElement("div");
   mapDiv.id = "map";
   mapColumn.append(mapDiv);
@@ -57,8 +57,25 @@ function getList(coord) {
 
 function listCallback(results, status) {
   if (status == google.maps.places.PlacesServiceStatus.OK) {
-    listHikes(results);
+    // listHikes(results);
+    handlePlacesResults(results);
   }
+}
+
+function handlePlacesResults(results) {
+    let placeResultObj;
+    for (let i = 0; i < 5; i++) {
+        const placeResultObj = {
+            lat: results[i].geometry.location.lat(),
+            lng: results[i].geometry.location.lng(),
+            name: results[i].name,
+            address: results[i].formatted_address,
+            rating: results[i].rating,
+            placeId: results[i].place_id,
+            photo: results[i].photos[0].getUrl()
+        };
+        createResultCard(placeResultObj);
+    }
 }
 
 // push first 5 'best hikes' results into list
@@ -189,21 +206,11 @@ async function getWeather(lat, lng) {
  * @param {object} searchResultObj object that encapsulates relevant data for each search result from the google places api 
  * @returns {object} A card div
  */
-function createResultCard(searchResult) {
-
-    // test result object
-    searchResultObj = {
-        lat: 47.608013,
-        lng: -122.335167,
-        name: "Hike name",
-        rating: 4.7,
-        numReviews: 123,
-        elevation: 3200
-    };
+function createResultCard(searchResultObj) {
 
     // create card container
     const containterCardEl = document.createElement("div");
-    let cls = ["container-card", "card", "is-rounded", "my-3"];
+    let cls = ["container-card", "card", "is-rounded", "mb-5"];
     containterCardEl.classList.add(...cls);
 
     // create card header
@@ -211,14 +218,28 @@ function createResultCard(searchResult) {
     cls = ["container-header", "card-header", "mb-2"];
     containerHeaderEl.classList.add(...cls);
     const headerPEl = document.createElement("p");
-    headerPEl.classList.add("card-header-title", "has-background-info", "has-text-white-bis", "is-size-4");
+    headerPEl.classList.add("card-header-title", "has-background-warning-light", "has-text-info-dark", "is-size-4", "pl-5");
     headerPEl.textContent = searchResultObj.name;
     containerHeaderEl.append(headerPEl);
 
     // create container card body div
     const containerBodyEl = document.createElement("div");
-    cls = ["container-body", "card-content"];
+    cls = ["container-body", "card-content", "pt-1"];
     containerBodyEl.classList.add(...cls);
+
+    // create photos image
+    const resultDetails = document.createElement("div");
+    cls = ["result-details", "card-text", "mb-3"];
+    resultDetails.classList.add(...cls);
+    resultDetails.innerHTML = `<p class="is-size-4 has-text-centered has-text-weight-semibold">${searchResultObj.rating} Stars</p>
+                                <p class="is-size-6 has-text-centered">${searchResultObj.address}</p>`;
+
+    const footer = document.createElement("footer");
+    cls = ["card-footer", "mt-3"];
+    footer.classList.add(...cls);
+    footer.innerHTML = `<a href="https://www.google.com/maps/search/?api=1&query=Google&query_place_id=${searchResultObj.placeId}" class="button is-link card-footer-item" target="_blank">Get Directions</a>`;
+    // append to card body
+    containerBodyEl.append(resultDetails);
 
     getWeather(searchResultObj.lat, searchResultObj.lng)
     .then(data => {
@@ -229,10 +250,9 @@ function createResultCard(searchResult) {
             "UV Index": Math.round(data.current.uvi),
             "icon": data.current.weather[0].icon
         };
-
-        containerBodyEl.append(createWeatherCard(currentWeatherObj));
+        containerBodyEl.append(createWeatherCard(currentWeatherObj), footer);
         containterCardEl.append(containerHeaderEl, containerBodyEl);
-        document.querySelector('#listColumn').append(containterCardEl);
+        document.querySelector('#result-list').append(containterCardEl);
     });
 }
 
@@ -244,7 +264,7 @@ function createResultCard(searchResult) {
 function createWeatherCard(weatherDataObj) {
     // create weather card
     const weatherCardContainerEl = document.createElement("div");
-    cls = ["weather-card-container", "p-0", "is-6", "columns", "is-centered"];
+    cls = ["weather-card-container", "p-0", "is-centered"];
     weatherCardContainerEl.classList.add(...cls);
 
     // create weather card
