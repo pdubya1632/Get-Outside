@@ -10,8 +10,8 @@ const mapDiv = document.getElementById("map");
 // get lat lng from city search
 function initialize() {
   bounds = new google.maps.LatLngBounds();
-  let infoWindow = new google.maps.InfoWindow();
-  let currentInfoWindow = infoWindow;
+  infoWindow = new google.maps.InfoWindow();
+  currentInfoWindow = infoWindow;
 
   const input = document.getElementById("search-input");
   const autocomplete = new google.maps.places.Autocomplete(input);
@@ -47,20 +47,21 @@ function loadMap(latSearch, lngSearch) {
 function getList(coord) {
   let request = {
     location: coord,
-    radius: "5000",
+    radius: "10000",
     query: "best hikes",
   };
 
   service = new google.maps.places.PlacesService(map);
-  service.textSearch(request, listCallback);
-}
+  service.textSearch(request, function(results, status) {
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+      handlePlacesResults(results);
+      for (var i = 0; i < 5; i++) {
+        createMarkers(results[i]);
+      }
+      map.setCenter(results[0].geometry.location);
+    }
+  });
 
-function listCallback(results, status) {
-  if (status == google.maps.places.PlacesServiceStatus.OK) {
-    // listHikes(results);
-    handlePlacesResults(results);
-  }
-}
 
 function handlePlacesResults(results) {
     let placeResultObj;
@@ -79,19 +80,17 @@ function handlePlacesResults(results) {
 }
 
 // push first 5 'best hikes' results into list
-function listHikes(results, status) {
-  console.log(results);
+function listHikes(place) {
 
-  for (var i = 0; i < 5; i++) {
-    let name = results[i].name;
-    let address = results[i].formatted_address;
-    let rating = results[i].rating;
-    let placeId = results[i].place_id;
+    let name = place.name;
+    let address = place.formatted_address;
+    let rating = place.rating;
+    let placeId = place.place_id;
 
     const listColumn = document.getElementById("listColumn");
-    listColumn.innerHTML += `<div class="card">
-          <header class="card-header">
-            <p class="card-header-title hikeBtn" data-lat="${lat}" data-lng="${lng}">
+    listColumn.innerHTML += `<div class="card" data-placeId="${placeId}" data-lat="${lat}" data-lng="${lng}">  
+    <header class="card-header">
+            <p class="card-header-title hikeBtn">
             ${name}
             </p>
             <button class="card-header-icon" aria-label="more options">
@@ -104,7 +103,7 @@ function listHikes(results, status) {
             <div class="content">
             <ul>
             <li>Rating: ${rating}</li>
-            <li>${address}</li>
+            <li>Current Conditions below...</li>
             </ul>
             </div>
           </div>
@@ -114,25 +113,19 @@ function listHikes(results, status) {
         </div>`;
   }
 
-  // set click listener to all cards created in loop above
-  document.querySelectorAll(".hikeBtn").forEach((item) => {
-    item.addEventListener("click", (event) => {
-      console.log("weather clicked");
-      //getWeather(item.getAttribute("data-lat"), item.getAttribute("data-lng"));
-    });
-  });
-
-  createMarkers(results);
-}
-
 // Set markers at the location of each place result
-function createMarkers(places) {
-  places.forEach((place) => {
+function createMarkers(place) {
+  let markers = [];
+
+  // places.forEach((place) => {
+    
     let marker = new google.maps.Marker({
       position: place.geometry.location,
       map: map,
       title: place.name,
     });
+
+    markers.push(marker);
 
     // Add click listener to each marker
     google.maps.event.addListener(marker, "click", () => {
@@ -145,6 +138,7 @@ function createMarkers(places) {
           "rating",
           "website",
           "photos",
+          "place_id"
         ],
       };
 
@@ -154,9 +148,8 @@ function createMarkers(places) {
     });
 
     bounds.extend(place.geometry.location);
-  });
+    map.fitBounds(bounds);
 
-  map.fitBounds(bounds);
 }
 
 // create InfoWindow to display details above the marker
@@ -167,17 +160,21 @@ function showDetails(placeResult, marker, status) {
 
     if (placeResult.rating) rating = placeResult.rating;
     placeInfowindow.setContent(
-      "<div><strong>" +
-        placeResult.name +
-        "</strong><br>" +
-        "Rating: " +
-        rating +
-        "</div>"
+      `<div>
+      <strong>${placeResult.name}</strong>
+      <br>
+      Rating:${rating}
+      <br>
+      <a href="https://www.google.com/maps/search/?api=1&query=Google&query_place_id=${placeResult.place_id}" target="_blank">Get Directions</a>
+      </div>`
     );
     placeInfowindow.open(marker.map, marker);
     currentInfoWindow.close();
     currentInfoWindow = placeInfowindow;
-    // showPanel(placeResult);
+
+    // todo: connect markers and list items
+    let cards = document.querySelectorAll(".card");
+    let value = cards.getAttribute("data-state");
   } else {
     console.log("showDetails failed: " + status);
   }
