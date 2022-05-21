@@ -171,8 +171,8 @@ function showDetails(placeResult, marker, status) {
     currentInfoWindow = placeInfowindow;
 
     // todo: connect markers and list items
-    let cards = document.querySelectorAll(".card");
-    let value = cards.getAttribute("data-state");
+    //let cards = document.querySelectorAll(".card");
+    //let value = cards.getAttribute("data-state");
   } else {
     console.log("showDetails failed: " + status);
   }
