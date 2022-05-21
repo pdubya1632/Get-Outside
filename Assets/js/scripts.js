@@ -5,28 +5,36 @@ let currentInfoWindow;
 let bounds;
 let service;
 
-// get lat lng from city search
+/**
+ * Initiliaze function, called on page load
+ */
 function initialize() {
+  // clear previous results
   document.querySelector("#result-list").innerHTML = "";
+
+  // create a new map object
   bounds = new google.maps.LatLngBounds();
   infoWindow = new google.maps.InfoWindow();
   currentInfoWindow = infoWindow;
 
   const input = document.getElementById("search-input");
   const autocomplete = new google.maps.places.Autocomplete(input);
+
+  // add listener for autocomplete
   google.maps.event.addListener(autocomplete, "place_changed", function () {
     let place = autocomplete.getPlace();
     lat = place.geometry.location.lat();
     lng = place.geometry.location.lng();
 
-    console.log(place);
-    console.log(lat + ", " + lng);
-
     loadMap(lat, lng);
   });
 }
 
-// load map centered on search location
+/**
+ * Load Google Map centered on search location
+ * @param {number} latSearch map latitude 
+ * @param {number} lngSearch map longitude
+ */
 function loadMap(latSearch, lngSearch) {
   const coord = new google.maps.LatLng(lat, lng);
 
@@ -44,6 +52,11 @@ function loadMap(latSearch, lngSearch) {
   getList(coord);
 }
 
+/**
+ * Gets list of results from Google Places API
+ * Updates map and adds search results to HTML
+ * @param {object} coord google.maps.LagLng object
+ */
 function getList(coord) {
   let request = {
     location: coord,
@@ -54,19 +67,25 @@ function getList(coord) {
   service = new google.maps.places.PlacesService(map);
   service.textSearch(request, function(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
-      initialize();
+      document.querySelector("#result-list").innerHTML = "";
       handlePlacesResults(results);
-      for (var i = 0; i < 5; i++) {
-        createMarkers(results[i]);
-      }
       map.setCenter(results[0].geometry.location);
     }
   });
 }
 
+/**
+ * Callback for Google Places API
+ * Creates a result card and appends it to html
+ * @param {object} results array of places returned from google places api
+ */
 function handlePlacesResults(results) {
-    let placeResultObj;
-    for (let i = 0; i < 5; i++) {
+    let numResults = results.length;
+    if (numResults > 5) {
+      numResults = 5;
+    }
+
+    for (let i = 0; i < numResults; i++) {
         const placeResultObj = {
             lat: results[i].geometry.location.lat(),
             lng: results[i].geometry.location.lng(),
@@ -76,44 +95,14 @@ function handlePlacesResults(results) {
             placeId: results[i].place_id,
         };
         createResultCard(placeResultObj);
+        createMarkers(results[i]);
     }
 }
 
-// push first 5 'best hikes' results into list
-// function listHikes(place) {
-
-//     let name = place.name;
-//     let address = place.formatted_address;
-//     let rating = place.rating;
-//     let placeId = place.place_id;
-
-//     const listColumn = document.getElementById("listColumn");
-//     listColumn.innerHTML += `<div class="card" data-placeId="${placeId}" data-lat="${lat}" data-lng="${lng}">  
-//     <header class="card-header">
-//             <p class="card-header-title hikeBtn">
-//             ${name}
-//             </p>
-//             <button class="card-header-icon" aria-label="more options">
-//               <span class="icon">
-//                 <i class="fas fa-angle-down" aria-hidden="true"></i>
-//               </span>
-//             </button>
-//           </header>
-//           <div class="card-content">
-//             <div class="content">
-//             <ul>
-//             <li>Rating: ${rating}</li>
-//             <li>Current Conditions below...</li>
-//             </ul>
-//             </div>
-//           </div>
-//           <footer class="card-footer">
-//             <a href="https://www.google.com/maps/search/?api=1&query=Google&query_place_id=${placeId}" class="card-footer-item" target="_blank">Get Directions</a>
-//           </footer>
-//         </div>`;
-//   }
-
-// Set markers at the location of each place result
+/**
+ * Set markers at the location of each place result
+ * @param {object} place place result object 
+ */
 function createMarkers(place) {
   let markers = [];
     
@@ -150,7 +139,12 @@ function createMarkers(place) {
 
 }
 
-// create InfoWindow to display details above the marker
+/**
+ * Create InfoWindow to display details above the marker
+ * @param {object} placeResult place details
+ * @param {object} marker marker object
+ * @param {string} status api call status
+ */
 function showDetails(placeResult, marker, status) {
   if (status == google.maps.places.PlacesServiceStatus.OK) {
     let placeInfowindow = new google.maps.InfoWindow();
@@ -226,7 +220,11 @@ function createResultCard(searchResultObj) {
     const resultDetails = document.createElement("div");
     cls = ["result-details", "card-text", "mb-3"];
     resultDetails.classList.add(...cls);
-    resultDetails.innerHTML = `<p class="is-size-5 has-text-centered has-text-weight-semibold">${searchResultObj.rating} Stars</p>
+    let ratingText = "No Ratings Yet";
+    if (searchResultObj.rating) {
+      ratingText = searchResultObj.rating + " Stars";
+    }
+    resultDetails.innerHTML = `<p class="is-size-5 has-text-centered has-text-weight-semibold">${ratingText}</p>
                                 <p class="is-size-7 has-text-centered">${searchResultObj.address}</p>`;
 
     const footer = document.createElement("footer");
@@ -316,4 +314,4 @@ function createWeatherCard(weatherDataObj) {
 }
 
 // trigger initialize upon page load
-google.maps.event.addDomListener(window, "load", initialize);
+initialize();
