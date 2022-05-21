@@ -9,9 +9,6 @@ let map;
 let bounds;
 let service;
 
-// search input field
-let searchResults = document.querySelector(".results");
-
 // get lat lng from city search
 function initialize() {
   bounds = new google.maps.LatLngBounds();
@@ -36,14 +33,10 @@ function initialize() {
 const getHikes = (lat, lng) => {
   const coord = new google.maps.LatLng(lat, lng);
 
-  searchResults.innerHTML +=
-    `<div class="columns">
-      <div id="listColumn" class="column">
-      </div>
-      <div id="mapColumn" class="column">
-        <div id="map"></div>
-      </div>  
-    </div>`;
+  const mapColumn = document.getElementById("mapColumn");
+  const mapDiv = document.createElement("div");
+  mapDiv.id = "map";
+  mapColumn.append(mapDiv);
 
   map = new google.maps.Map(mapDiv, {
     center: coord,
@@ -62,7 +55,7 @@ const getHikes = (lat, lng) => {
 
 function callback(results, status) {
   if (status == google.maps.places.PlacesServiceStatus.OK) {
-    //listHikes(results);
+    listHikes(results);
   }
 }
 
@@ -72,7 +65,9 @@ function listHikes(results, status) {
 
   for (var i = 0; i < 5; i++) {
     let name = results[i].name;
-    searchResults.innerHTML += `<div class="card">
+    
+    const listColumn = document.getElementById("listColumn");
+    listColumn.innerHTML += `<div class="card">
           <header class="card-header">
             <p class="card-header-title hikeBtn" data-lat="${lat}" data-lng="${lng}">
             ${name}
@@ -91,7 +86,7 @@ function listHikes(results, status) {
           <div class="card-content">
             <div class="content">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
-              <a href="#">@bulmaio</a>. <a href="#">#css</a> <a href="#">#responsive</a>
+              <a href="#">@bulmaio</a>.
             </div>
           </div>
           <footer class="card-footer">
