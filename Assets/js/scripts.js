@@ -116,8 +116,6 @@ function handlePlacesResults(results) {
 // Set markers at the location of each place result
 function createMarkers(place) {
   let markers = [];
-
-  // places.forEach((place) => {
     
     let marker = new google.maps.Marker({
       position: place.geometry.location,
@@ -229,7 +227,7 @@ function createResultCard(searchResultObj) {
     cls = ["result-details", "card-text", "mb-3"];
     resultDetails.classList.add(...cls);
     resultDetails.innerHTML = `<p class="is-size-5 has-text-centered has-text-weight-semibold">${searchResultObj.rating} Stars</p>
-                                <p class="is-size-6 has-text-centered">${searchResultObj.address}</p>`;
+                                <p class="is-size-7 has-text-centered">${searchResultObj.address}</p>`;
 
     const footer = document.createElement("footer");
     cls = ["card-footer", "mt-3"];
