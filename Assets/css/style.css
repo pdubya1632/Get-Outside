@@ -1,7 +1,7 @@
 /* can some of these styles be pushed to a bulma class? */
 /* @import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"; */
 #map {
-    height: 500px;
+    height: 700px;
 }
 
 #results {
