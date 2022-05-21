@@ -38,7 +38,7 @@ function loadMap(latSearch, lngSearch) {
 
   map = new google.maps.Map(mapDiv, {
     center: coord,
-    zoom: 15,
+    zoom: 14,
   });
 
   getList(coord);
