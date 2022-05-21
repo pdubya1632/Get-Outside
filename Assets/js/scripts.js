@@ -1,13 +1,13 @@
 // get API Key from config object
 const OWMkey = config.OWMkey;
 
+// set default lat/lng to Seattle
 let lat = "47.608013";
 let lng = "-122.335167";
+
 let map;
 let bounds;
 let service;
-
-let searchResults = document.querySelector(".results");
 
 // get lat lng from city search
 function initialize() {
@@ -24,7 +24,7 @@ function initialize() {
 
     console.log(place);
     console.log(lat + ", " + lng);
-    
+
     getHikes(lat, lng);
   });
 }
@@ -33,9 +33,10 @@ function initialize() {
 const getHikes = (lat, lng) => {
   const coord = new google.maps.LatLng(lat, lng);
 
+  const mapColumn = document.getElementById("mapColumn");
   const mapDiv = document.createElement("div");
   mapDiv.id = "map";
-  searchResults.append(mapDiv);
+  mapColumn.append(mapDiv);
 
   map = new google.maps.Map(mapDiv, {
     center: coord,
@@ -64,22 +65,41 @@ function listHikes(results, status) {
 
   for (var i = 0; i < 5; i++) {
     let name = results[i].name;
-    searchResults.innerHTML += `<div class="card block">
+    
+    const listColumn = document.getElementById("listColumn");
+    listColumn.innerHTML += `<div class="card">
           <header class="card-header">
-              <p class="card-header-title hikeBtn" data-lat="${lat}" data-lng="${lng}">${name}</p>
-              <button class="card-header-icon" aria-label="more options">
+            <p class="card-header-title hikeBtn" data-lat="${lat}" data-lng="${lng}">
+            ${name}
+            </p>
+            <button class="card-header-icon" aria-label="more options">
               <span class="icon">
-                  <i class="fas fa-angle-down" aria-hidden="true"></i>
+                <i class="fas fa-angle-down" aria-hidden="true"></i>
               </span>
-              </button>
+            </button>
           </header>
-          </div>`;
+          <div class="card-image">
+          <figure class="image is-4by3">
+            <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+          </figure>
+        </div>
+          <div class="card-content">
+            <div class="content">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
+              <a href="#">@bulmaio</a>.
+            </div>
+          </div>
+          <footer class="card-footer">
+            <a href="#" class="card-footer-item">Get Directions</a>
+          </footer>
+        </div>`;
   }
 
   // set click listener to all cards created in loop above
   document.querySelectorAll(".hikeBtn").forEach((item) => {
     item.addEventListener("click", (event) => {
-      getWeather(item.getAttribute("data-lat"), item.getAttribute("data-lng"));
+      console.log("weather clicked");
+      //getWeather(item.getAttribute("data-lat"), item.getAttribute("data-lng"));
     });
   });
 
@@ -109,9 +129,7 @@ function createMarkers(places) {
         ],
       };
 
-      /* Only fetch the details of a place when the user clicks on a marker.
-       * If we fetch the details for all place results as soon as we get
-       * the search response, we will hit API rate limits. */
+      /* Only fetch the details of a place when the user clicks on a marker. */
       // service.getDetails(request, (placeResult, status) => {
       //   showDetails(placeResult, marker, status);
       // });
@@ -123,7 +141,7 @@ function createMarkers(places) {
   map.fitBounds(bounds);
 }
 
-// Builds an InfoWindow to display details above the marker
+// create InfoWindow to display details above the marker
 function showDetails(placeResult, marker, status) {
   if (status == google.maps.places.PlacesServiceStatus.OK) {
     let placeInfowindow = new google.maps.InfoWindow();
