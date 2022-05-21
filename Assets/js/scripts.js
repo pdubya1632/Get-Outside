@@ -5,6 +5,8 @@ let lat;
 let lng;
 let map;
 let coord;
+let infoWindow;
+let currentInfoWindow;
 let bounds;
 let service;
 
@@ -45,21 +47,18 @@ function loadMap(latSearch, lngSearch) {
   });
 
   getList(coord);
-
-};
+}
 
 function getList(coord) {
-
   let request = {
     location: coord,
     radius: "5000",
-    keyword: "best hikes"
+    query: "best hikes",
   };
 
   service = new google.maps.places.PlacesService(map);
-  service.nearbySearch(request, listCallback);
-  
-};
+  service.textSearch(request, listCallback);
+}
 
 function listCallback(results, status) {
   if (status == google.maps.places.PlacesServiceStatus.OK) {
@@ -125,7 +124,6 @@ function createMarkers(places) {
 
     // Add click listener to each marker
     google.maps.event.addListener(marker, "click", () => {
-      
       let request = {
         placeId: place.place_id,
         fields: [
@@ -138,12 +136,9 @@ function createMarkers(places) {
         ],
       };
 
-      console.log(request);
-
-      // /* Only fetch the details of a place when the user clicks on a marker. */
-      // service.getDetails(request, (placeResult, status) => {
-      //   showDetails(placeResult, marker, status);
-      // });
+      service.getDetails(request, (placeResult, status) => {
+        showDetails(placeResult, marker, status);
+      });
     });
 
     bounds.extend(place.geometry.location);
@@ -157,6 +152,7 @@ function showDetails(placeResult, marker, status) {
   if (status == google.maps.places.PlacesServiceStatus.OK) {
     let placeInfowindow = new google.maps.InfoWindow();
     let rating = "None";
+
     if (placeResult.rating) rating = placeResult.rating;
     placeInfowindow.setContent(
       "<div><strong>" +
