@@ -5,10 +5,9 @@ let currentInfoWindow;
 let bounds;
 let service;
 
-const mapDiv = document.getElementById("map");
-
 // get lat lng from city search
 function initialize() {
+  document.querySelector("#result-list").innerHTML = "";
   bounds = new google.maps.LatLngBounds();
   infoWindow = new google.maps.InfoWindow();
   currentInfoWindow = infoWindow;
@@ -32,6 +31,7 @@ function loadMap(latSearch, lngSearch) {
   const coord = new google.maps.LatLng(lat, lng);
 
   const mapColumn = document.getElementById("result-map");
+  mapColumn.innerHTML = "";
   const mapDiv = document.createElement("div");
   mapDiv.id = "map";
   mapColumn.append(mapDiv);
@@ -48,12 +48,13 @@ function getList(coord) {
   let request = {
     location: coord,
     radius: "10000",
-    query: "best hikes",
+    query: "mountain trail",
   };
 
   service = new google.maps.places.PlacesService(map);
   service.textSearch(request, function(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
+      initialize();
       handlePlacesResults(results);
       for (var i = 0; i < 5; i++) {
         createMarkers(results[i]);
@@ -61,7 +62,7 @@ function getList(coord) {
       map.setCenter(results[0].geometry.location);
     }
   });
-
+}
 
 function handlePlacesResults(results) {
     let placeResultObj;
@@ -73,7 +74,6 @@ function handlePlacesResults(results) {
             address: results[i].formatted_address,
             rating: results[i].rating,
             placeId: results[i].place_id,
-            photo: results[i].photos[0].getUrl()
         };
         createResultCard(placeResultObj);
     }
