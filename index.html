@@ -11,7 +11,7 @@
 </head>
 
 <body>
-  <div class="container is-max-desktop">
+  <div class="container is-widescreen">
     <section class="hero box my-4 py-5">
       <div class="hero-body">
         <p class="title has-text-centered has-text-white is-size-1">
@@ -21,7 +21,7 @@
           Search for the best hikes near a location
         </p>
         <div class="columns">
-          <div class="column is-8 is-offset-2">
+          <div class="column is-9 is-offset-2">
             <div class="columns is-centered is-mobile">
               <div class="column is-two-thirds">
                 <input class="input is-large" id="search-input" type="text" placeholder="Enter a location">
@@ -34,10 +34,10 @@
         </div>
       </div>
     </section>
-    <div class="columns results">
-      <div id="mapColumn" class="column is-two-thirds">
+    <div class="results columns">
+      <div id="result-list" class="column is-one-quarter">
       </div>
-      <div id="listColumn" class="column is-one-third">
+      <div id="result-map" class="column is-three-quarters">
       </div>
     </div>
   </div>
