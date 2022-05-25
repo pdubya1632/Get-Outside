@@ -6,7 +6,7 @@ let bounds;
 let service;
 
 /**
- * Initiliaze function, called on page load
+ * Init function, called on page load
  */
 function initialize() {
     // clear previous results
@@ -46,7 +46,7 @@ function loadMap(latSearch, lngSearch) {
 
     map = new google.maps.Map(mapDiv, {
         center: coord,
-        zoom: 14,
+        zoom: 10,
     });
 
     getList(coord);
