@@ -301,7 +301,7 @@ function createWeatherCard(weatherDataObj) {
 
         const propertyDiv = document.createElement("div");
         propertyDiv.textContent = `${property}: ${weatherDataObj[property]}`;
-        propertyDiv.classList.add("px-2")
+        // propertyDiv.classList.add("px-2")
 
         weatherCardTextEl.append(propertyDiv);
     }
