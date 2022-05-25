@@ -94,7 +94,9 @@ function handlePlacesResults(results) {
       rating: results[i].rating,
       placeId: results[i].place_id,
     };
-    createResultCard(placeResultObj);
+    
+    let count = i + 1;
+    createResultCard(placeResultObj, count);
     createMarkers(results[i]);
   }
 }
@@ -196,33 +198,44 @@ async function getWeather(lat, lng) {
  * @param {object} searchResultObj object that encapsulates relevant data for each search result from the google places api
  * @returns {object} A card div
  */
-function createResultCard(searchResultObj) {
+function createResultCard(searchResultObj, count) {
+
+    document.querySelector("#result-list").innerHTML +=
+    `<input type="radio" id="panel-${count}" name="accordion-select">`;
+
   // create card container
   const containterCardEl = document.createElement("div");
-  let cls = ["container-card", "card", "is-rounded", "mb-5"];
+  // let cls = ["container-card", "card", "is-rounded", "mb-5"];
+  let cls = ["panel"];
   containterCardEl.classList.add(...cls);
 
   // create card header
-  const containerHeaderEl = document.createElement("div");
-  cls = ["container-header", "card-header", "mb-2"];
+  const containerHeaderEl = document.createElement("label");
+  // cls = ["container-header", "card-header", "mb-2"];
+  cls = ["panel-heading", "mb-2"];
   containerHeaderEl.classList.add(...cls);
-  const headerPEl = document.createElement("p");
-  headerPEl.classList.add(
-    "card-header-title",
-    "has-background-warning-light",
-    "has-text-info-dark",
-    "is-size-5",
-    "pl-5"
-  );
-  headerPEl.textContent = searchResultObj.name;
-  containerHeaderEl.append(headerPEl);
+  containerHeaderEl.setAttribute("for","panel-"+count);
+  containerHeaderEl.textContent = searchResultObj.name;
 
+//   const headerPEl = document.createElement("label");
+//   headerPEl.classList.add(
+//     "card-header-title",
+//     "has-background-warning-light",
+//     "has-text-info-dark",
+//     "is-size-5",
+//     "pl-5"
+//   );
+//   headerPEl.textContent = searchResultObj.name;
+//   containerHeaderEl.append(headerPEl);
+  
   // create container card body div
   const containerBodyEl = document.createElement("div");
-  cls = ["container-body", "card-content", "pt-1"];
+  // cls = ["container-body", "card-content", "pt-1"];
+  cls = ["panel-block", "body-"+count];
   containerBodyEl.classList.add(...cls);
 
-  // create photos image
+  // todo: create photos image
+
   const resultDetails = document.createElement("div");
   cls = ["result-details", "card-text", "mb-3"];
   resultDetails.classList.add(...cls);
