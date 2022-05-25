@@ -260,6 +260,7 @@ function createResultCard(searchResultObj) {
  * @returns weather card component
  */
 function createWeatherCard(weatherDataObj) {
+
   // create weather card
   const weatherCardContainerEl = document.createElement("div");
   cls = ["weather-card-container", "p-0", "is-centered"];
@@ -267,7 +268,7 @@ function createWeatherCard(weatherDataObj) {
 
   // create weather card
   const weatherCardEl = document.createElement("div");
-  cls = ["weather-card", "card", "m-1"];
+  cls = ["weather-card", "card", "mb-5"];
   weatherCardEl.classList.add(...cls);
 
   // create weather image
