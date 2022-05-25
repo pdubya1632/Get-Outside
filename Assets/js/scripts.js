@@ -284,8 +284,9 @@ function createWeatherCard(weatherDataObj) {
   const weatherHeaderEl = document.createElement("div");
   cls = ["weather-header", "card-header"];
   weatherHeaderEl.classList.add(...cls);
+  
   const headerPEl = document.createElement("p");
-  headerPEl.classList.add("card-header-title", "pr-0", "has-text-info");
+  headerPEl.classList.add("card-header-title", "has-text-info");
   headerPEl.textContent = "Current Conditions";
   weatherHeaderEl.append(headerPEl, weatherCardImgEl);
 
