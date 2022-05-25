@@ -291,7 +291,7 @@ function createWeatherCard(weatherDataObj) {
 
   // create weather body
   const weatherCardBodyEl = document.createElement("div");
-  cls = ["weather-body", "card-content", "column", "is-10", "is-offset-2"];
+  cls = ["weather-body", "card-content", "column", "is-10"];
   weatherCardBodyEl.classList.add(...cls);
 
   // create weather text
