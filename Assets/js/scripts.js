@@ -282,7 +282,7 @@ function createWeatherCard(weatherDataObj) {
 
   // create weather card header
   const weatherHeaderEl = document.createElement("div");
-  cls = ["weather-header", "card-header", "has-text-centered"];
+  cls = ["weather-header", "card-header"];
   weatherHeaderEl.classList.add(...cls);
   const headerPEl = document.createElement("p");
   headerPEl.classList.add("card-header-title", "pr-0", "has-text-info");
