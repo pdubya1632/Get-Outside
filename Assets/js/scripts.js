@@ -201,70 +201,60 @@ async function getWeather(lat, lng) {
 function createResultCard(searchResultObj, count) {
 
     document.querySelector("#result-list").innerHTML +=
-    `<input type="radio" id="panel-${count}" name="accordion-select">`;
+    `<input type="radio" id="card-${count}" name="accordion-select">`;
 
-  // create card container
-  const containterCardEl = document.createElement("div");
-  // let cls = ["container-card", "card", "is-rounded", "mb-5"];
-  let cls = ["panel"];
-  containterCardEl.classList.add(...cls);
+// create card container
+const containerCardEl = document.createElement("div");
+let cls = ["container-card", "card", "is-rounded", "mb-5"];
+containerCardEl.classList.add(...cls);
 
-  // create card header
-  const containerHeaderEl = document.createElement("label");
-  // cls = ["container-header", "card-header", "mb-2"];
-  cls = ["panel-heading", "mb-2"];
-  containerHeaderEl.classList.add(...cls);
-  containerHeaderEl.setAttribute("for","panel-"+count);
-  containerHeaderEl.textContent = searchResultObj.name;
+// create card header
+const containerHeaderEl = document.createElement("label");
+cls = ["container-header", "card-header", "mb-2"];
+containerHeaderEl.setAttribute("for","card-"+count);
+containerHeaderEl.classList.add(...cls);
 
-//   const headerPEl = document.createElement("label");
-//   headerPEl.classList.add(
-//     "card-header-title",
-//     "has-background-warning-light",
-//     "has-text-info-dark",
-//     "is-size-5",
-//     "pl-5"
-//   );
-//   headerPEl.textContent = searchResultObj.name;
-//   containerHeaderEl.append(headerPEl);
-  
-  // create container card body div
-  const containerBodyEl = document.createElement("div");
-  // cls = ["container-body", "card-content", "pt-1"];
-  cls = ["panel-block", "body-"+count];
-  containerBodyEl.classList.add(...cls);
+const headerPEl = document.createElement("p");
+headerPEl.classList.add("card-header-title", "has-background-warning-light", "has-text-info-dark", "is-size-5", "pl-5");
+headerPEl.textContent = searchResultObj.name;
+containerHeaderEl.append(headerPEl);
 
-  // todo: create photos image
+// create container card body div
+const containerBodyEl = document.createElement("div");
+cls = ["container-body", "card-content", "pt-1", "body-"+count];
+containerBodyEl.classList.add(...cls);
 
-  const resultDetails = document.createElement("div");
-  cls = ["result-details", "card-text", "mb-3"];
-  resultDetails.classList.add(...cls);
-  let ratingText = "No Ratings Yet";
-  if (searchResultObj.rating) {
+// create photos image
+const resultDetails = document.createElement("div");
+cls = ["result-details", "card-text", "mb-3"];
+resultDetails.classList.add(...cls);
+let ratingText = "No Ratings Yet";
+if (searchResultObj.rating) {
     ratingText = searchResultObj.rating + " Stars";
-  }
-  resultDetails.innerHTML = `<p class="is-size-5 has-text-centered has-text-weight-semibold">${ratingText}</p>
-                                <p class="is-size-7 has-text-centered">${searchResultObj.address}</p>`;
+}
+resultDetails.innerHTML = `<p class="is-size-5 has-text-centered has-text-weight-semibold">${ratingText}</p>
+                            <p class="is-size-7 has-text-centered">${searchResultObj.address}</p>`;
 
-  const footer = document.createElement("footer");
-  cls = ["card-footer", "mt-3"];
-  footer.classList.add(...cls);
-  footer.innerHTML = `<a href="https://www.google.com/maps/search/?api=1&query=Google&query_place_id=${searchResultObj.placeId}" class="button is-link card-footer-item" target="_blank">Get Directions</a>`;
-  // append to card body
-  containerBodyEl.append(resultDetails);
+const footer = document.createElement("footer");
+cls = ["card-footer", "mt-3"];
+footer.classList.add(...cls);
+footer.innerHTML = `<a href="https://www.google.com/maps/search/?api=1&query=Google&query_place_id=${searchResultObj.placeId}" class="button is-link card-footer-item" target="_blank">Get Directions</a>`;
+// append to card body
+containerBodyEl.append(resultDetails);
 
-  getWeather(searchResultObj.lat, searchResultObj.lng).then((data) => {
-    const currentWeatherObj = {
-      Temp: Math.round(data.current.temp) + "°F",
-      Wind: Math.round(data.current.wind_speed) + " MPH",
-      Humidity: Math.round(data.current.humidity) + "%",
-      "UV Index": Math.round(data.current.uvi),
-      icon: data.current.weather[0].icon,
-    };
-    containerBodyEl.append(createWeatherCard(currentWeatherObj), footer);
-    containterCardEl.append(containerHeaderEl, containerBodyEl);
-    document.querySelector("#result-list").append(containterCardEl);
-  });
+getWeather(searchResultObj.lat, searchResultObj.lng)
+    .then(data => {
+        const currentWeatherObj = {
+            "Temp": Math.round(data.current.temp) + "°F",
+            "Wind": Math.round(data.current.wind_speed) + " MPH",
+            "Humidity": Math.round(data.current.humidity) + "%",
+            "UV Index": Math.round(data.current.uvi),
+            "icon": data.current.weather[0].icon
+        };
+        containerBodyEl.append(createWeatherCard(currentWeatherObj), footer);
+        containerCardEl.append(containerHeaderEl, containerBodyEl);
+        document.querySelector('#result-list').append(containerCardEl);
+    });
 }
 
 /**
@@ -306,12 +296,14 @@ function createWeatherCard(weatherDataObj) {
 
   // create weather body
   const weatherCardBodyEl = document.createElement("div");
-  cls = ["weather-body", "card-content", "columns"];
+  cls = ["weather-body", "card-content"];
+  // todo: split text into two columns
+  // cls = ["weather-body", "card-content", "columns"];
   weatherCardBodyEl.classList.add(...cls);
 
   // create weather text
   const weatherCardTextEl = document.createElement("div");
-  cls = ["weather-text", "content"];
+  cls = ["weather-text", "content", "is-size-7"];
   weatherCardTextEl.classList.add(...cls);
 
   // loop over the weatherDataObj and add to weatherCartTextEl

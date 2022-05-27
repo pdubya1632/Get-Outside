@@ -20,28 +20,28 @@
 }
 
 /* reset bulma panel styles */
-.panel {
+.card-header {
   box-shadow: none;
 }
 
-.panel:not(:last-child) {
+.card:not(:last-child) {
   margin: 0;
 }
 
 /* bulma accordion code from siongui.github.io */
-input[name="accordion-select"], .panel-block {
+input[name="accordion-select"], .card-content {
     display: none;
   }
-  label.panel-heading {
+  label.card-header {
     cursor: pointer;
     display: block;
   }
   
   /* the magic */
-  #panel-1:checked ~ .panel > .body-1,
-  #panel-2:checked ~ .panel > .body-2,
-  #panel-3:checked ~ .panel > .body-3,
-  #panel-3:checked ~ .panel > .body-4,
-  #panel-3:checked ~ .panel > .body-5 {
-    display: flex;
+  #card-1:checked ~ .card > .body-1,
+  #card-2:checked ~ .card > .body-2,
+  #card-3:checked ~ .card > .body-3,
+  #card-4:checked ~ .card > .body-4,
+  #card-5:checked ~ .card > .body-5 {
+    display: block;
   }
