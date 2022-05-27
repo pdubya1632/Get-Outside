@@ -296,14 +296,13 @@ function createWeatherCard(weatherDataObj) {
 
   // create weather body
   const weatherCardBodyEl = document.createElement("div");
-  cls = ["weather-body", "card-content"];
+  cls = ["weather-body", "card-content", "columns"];
   // todo: split text into two columns
-  // cls = ["weather-body", "card-content", "columns"];
   weatherCardBodyEl.classList.add(...cls);
 
   // create weather text
-  const weatherCardTextEl = document.createElement("div");
-  cls = ["weather-text", "content", "is-size-7"];
+  const weatherCardTextEl = document.createElement("ul");
+  cls = ["weather-text", "content"];
   weatherCardTextEl.classList.add(...cls);
 
   // loop over the weatherDataObj and add to weatherCartTextEl
@@ -313,7 +312,7 @@ function createWeatherCard(weatherDataObj) {
       break;
     }
 
-    const propertyDiv = document.createElement("div");
+    const propertyDiv = document.createElement("li");
     propertyDiv.textContent = `${property}: ${weatherDataObj[property]}`;
 
     weatherCardTextEl.append(propertyDiv);
