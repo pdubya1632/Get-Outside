@@ -205,17 +205,17 @@ function createResultCard(searchResultObj, count) {
 
 // create card container
 const containerCardEl = document.createElement("div");
-let cls = ["container-card", "card", "is-rounded", "mb-5"];
+let cls = ["container-card", "card", "is-rounded", "mb-3"];
 containerCardEl.classList.add(...cls);
 
 // create card header
 const containerHeaderEl = document.createElement("label");
-cls = ["container-header", "card-header", "mb-2"];
+cls = ["container-header", "card-header"];
 containerHeaderEl.setAttribute("for","card-"+count);
 containerHeaderEl.classList.add(...cls);
 
 const headerPEl = document.createElement("p");
-headerPEl.classList.add("card-header-title", "has-background-warning-light", "has-text-info-dark", "is-size-5", "pl-5");
+headerPEl.classList.add("card-header-title", "has-background-warning-light", "has-text-info-dark", "is-rounded");
 headerPEl.textContent = searchResultObj.name;
 containerHeaderEl.append(headerPEl);
 
@@ -232,7 +232,7 @@ let ratingText = "No Ratings Yet";
 if (searchResultObj.rating) {
     ratingText = searchResultObj.rating + " Stars";
 }
-resultDetails.innerHTML = `<p class="is-size-5 has-text-centered has-text-weight-semibold">${ratingText}</p>
+resultDetails.innerHTML = `<p class="has-text-centered has-text-weight-bold">${ratingText}</p>
                             <p class="is-size-7 has-text-centered">${searchResultObj.address}</p>`;
 
 const footer = document.createElement("footer");
@@ -271,7 +271,7 @@ function createWeatherCard(weatherDataObj) {
 
   // create weather card
   const weatherCardEl = document.createElement("div");
-  cls = ["weather-card", "card", "mb-5"];
+  cls = ["weather-card", "card", "mb-4", "pb-2"];
   weatherCardEl.classList.add(...cls);
 
   // create weather image
@@ -296,14 +296,13 @@ function createWeatherCard(weatherDataObj) {
 
   // create weather body
   const weatherCardBodyEl = document.createElement("div");
-  cls = ["weather-body", "card-content"];
+  cls = ["weather-body", "card-content", "columns"];
   // todo: split text into two columns
-  // cls = ["weather-body", "card-content", "columns"];
   weatherCardBodyEl.classList.add(...cls);
 
   // create weather text
-  const weatherCardTextEl = document.createElement("div");
-  cls = ["weather-text", "content", "is-size-7"];
+  const weatherCardTextEl = document.createElement("ul");
+  cls = ["weather-text", "content"];
   weatherCardTextEl.classList.add(...cls);
 
   // loop over the weatherDataObj and add to weatherCartTextEl
@@ -313,7 +312,7 @@ function createWeatherCard(weatherDataObj) {
       break;
     }
 
-    const propertyDiv = document.createElement("div");
+    const propertyDiv = document.createElement("li");
     propertyDiv.textContent = `${property}: ${weatherDataObj[property]}`;
 
     weatherCardTextEl.append(propertyDiv);

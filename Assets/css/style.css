@@ -19,13 +19,23 @@
     background-size: cover;
 }
 
-/* reset bulma panel styles */
+/* reset bulma card styles */
+.card {
+  border: 1px solid #ccc;
+  box-shadow: none;
+}
+
 .card-header {
   box-shadow: none;
 }
 
 .card:not(:last-child) {
   margin: 0;
+}
+
+div.weather-body {
+  margin: 0;
+  padding: 0 0 1rem 1rem;
 }
 
 /* bulma accordion code from siongui.github.io */
