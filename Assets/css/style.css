@@ -28,6 +28,11 @@
   margin: 0;
 }
 
+div.weather-body {
+  margin: 0;
+  padding: 0 0 1rem 1rem;
+}
+
 /* bulma accordion code from siongui.github.io */
 input[name="accordion-select"], .card-content {
     display: none;
