@@ -19,7 +19,12 @@
     background-size: cover;
 }
 
-/* reset bulma panel styles */
+/* reset bulma card styles */
+.card {
+  border: 1px solid #ccc;
+  box-shadow: none;
+}
+
 .card-header {
   box-shadow: none;
 }
