@@ -18,3 +18,30 @@
     background-repeat: no-repeat;
     background-size: cover;
 }
+
+/* reset bulma panel styles */
+.card-header {
+  box-shadow: none;
+}
+
+.card:not(:last-child) {
+  margin: 0;
+}
+
+/* bulma accordion code from siongui.github.io */
+input[name="accordion-select"], .card-content {
+    display: none;
+  }
+  label.card-header {
+    cursor: pointer;
+    display: block;
+  }
+  
+  /* the magic */
+  #card-1:checked ~ .card > .body-1,
+  #card-2:checked ~ .card > .body-2,
+  #card-3:checked ~ .card > .body-3,
+  #card-4:checked ~ .card > .body-4,
+  #card-5:checked ~ .card > .body-5 {
+    display: block;
+  }
